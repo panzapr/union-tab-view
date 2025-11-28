@@ -1,5 +1,5 @@
 //
-//  AdaptiveTabView.swift
+//  UnionTabView.swift
 //  UnionTabView
 //
 //  Created by Union St on 11/28/25.
@@ -7,6 +7,31 @@
 
 import SwiftUI
 
+/// An adaptive tab view that renders a Liquid Glass floating tab bar on iOS 26+ with fully custom tab item views.
+///
+/// On iOS 26, Apple's standard `TabView` only supports system-provided tab items. `UnionTabView` gives you
+/// the beautiful floating glass effect while allowing **any custom SwiftUI view** for each tab—icons, labels,
+/// badges, animations, whatever you want.
+///
+/// On iOS 17-25, falls back to a clean custom tab bar with the same API.
+///
+/// ```swift
+/// enum Tab { case home, settings }
+///
+/// struct ContentView: View {
+///     @State private var tab: Tab = .home
+///
+///     var body: some View {
+///         UnionTabView(selection: $tab, tabs: [.home, .settings]) {
+///             Text("Home").unionTab(Tab.home)
+///             Text("Settings").unionTab(Tab.settings)
+///         } item: { tab, isSelected in
+///             Image(systemName: tab == .home ? "house.fill" : "gear")
+///                 .foregroundStyle(isSelected ? .primary : .secondary)
+///         }
+///     }
+/// }
+/// ```
 public struct UnionTabView<Tab: Hashable, Content: View, TabItemContent: View>: View {
     @Binding var selection: Tab
     let tabs: [Tab]
@@ -16,6 +41,14 @@ public struct UnionTabView<Tab: Hashable, Content: View, TabItemContent: View>: 
 
     @State private var bottomInsets: CGFloat = 0
 
+    /// Creates an adaptive tab view with custom tab item rendering.
+    ///
+    /// - Parameters:
+    ///   - selection: A binding to the currently selected tab.
+    ///   - tabs: An array of all tabs in display order.
+    ///   - barTint: The tint color for the sliding selection indicator. Defaults to a subtle gray.
+    ///   - content: A view builder that provides the content for each tab. Apply `.unionTab(_:)` to each.
+    ///   - item: A view builder closure called for each tab, receiving the tab value and whether it's selected.
     public init(
         selection: Binding<Tab>,
         tabs: [Tab],
@@ -185,6 +218,22 @@ struct InteractiveSegmentedControl: UIViewRepresentable {
 }
 
 public extension View {
+    /// Marks this view as content for a specific tab in a `UnionTabView`.
+    ///
+    /// Apply this modifier to each tab's content view inside `UnionTabView`. On iOS 26+, it hides the system
+    /// tab bar and adds proper safe area spacing for the floating glass tab bar. On iOS 17-25, it simply
+    /// applies the `.tag()` modifier.
+    ///
+    /// ```swift
+    /// UnionTabView(selection: $tab, tabs: [.home, .settings]) {
+    ///     HomeView().unionTab(Tab.home)
+    ///     SettingsView().unionTab(Tab.settings)
+    /// } item: { tab, isSelected in
+    ///     // tab item content
+    /// }
+    /// ```
+    ///
+    /// - Parameter tab: The tab value this view represents.
     @ViewBuilder
     func unionTab<Tab: Hashable>(_ tab: Tab) -> some View {
         if #available(iOS 26, *) {

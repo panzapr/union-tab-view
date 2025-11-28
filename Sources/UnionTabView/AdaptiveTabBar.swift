@@ -7,6 +7,39 @@
 
 import SwiftUI
 
+/// An adaptive tab bar that renders a Liquid Glass floating tab bar on iOS 26+ for `TabItem` conforming types.
+///
+/// This is an alternative to `UnionTabView` that works with the `TabItem` protocol instead of a raw `[Tab]` array.
+/// It automatically iterates over all cases of your tab enum.
+///
+/// For most use cases, prefer `UnionTabView` which has a simpler API that doesn't require `CaseIterable` conformance.
+///
+/// ```swift
+/// enum MyTab: String, CaseIterable, TabItem {
+///     case home = "Home"
+///     case settings = "Settings"
+///     
+///     var symbol: String { ... }
+///     var actionSymbol: String { ... }
+/// }
+///
+/// struct ContentView: View {
+///     @State private var selectedTab: MyTab = .home
+///
+///     var body: some View {
+///         AdaptiveTabBar(selection: $selectedTab) {
+///             HomeView()
+///                 .glassTabBarContentPadding()
+///                 .tabItem { Label("Home", systemImage: "house") }
+///                 .tag(MyTab.home)
+///             SettingsView()
+///                 .glassTabBarContentPadding()
+///                 .tabItem { Label("Settings", systemImage: "gear") }
+///                 .tag(MyTab.settings)
+///         }
+///     }
+/// }
+/// ```
 public struct AdaptiveTabBar<Tab: TabItem, Content: View, TabItemContent: View>: View {
     @Binding public var selection: Tab
     public var activeTint: Color
@@ -16,6 +49,16 @@ public struct AdaptiveTabBar<Tab: TabItem, Content: View, TabItemContent: View>:
     public var content: () -> Content
     public var tabItemView: (Tab, Bool) -> TabItemContent
     
+    /// Creates an adaptive tab bar with custom tab item rendering.
+    ///
+    /// - Parameters:
+    ///   - selection: A binding to the currently selected tab.
+    ///   - activeTint: The color for selected tab items. Defaults to `.primary`.
+    ///   - inactiveTint: The color for unselected tab items. Defaults to `.secondary`.
+    ///   - barTint: The tint color for the sliding selection indicator. Defaults to a subtle gray.
+    ///   - tabBarHeight: The height of the tab bar. Defaults to 55 points.
+    ///   - content: A view builder for the tab content. Apply `.glassTabBarContentPadding()` and `.tag()` to each.
+    ///   - tabItemView: A view builder closure called for each tab, receiving the tab value and whether it's selected.
     public init(
         selection: Binding<Tab>,
         activeTint: Color = .primary,
@@ -67,6 +110,15 @@ public struct AdaptiveTabBar<Tab: TabItem, Content: View, TabItemContent: View>:
 }
 
 public extension AdaptiveTabBar where TabItemContent == DefaultTabItemView<Tab> {
+    /// Creates an adaptive tab bar with the default icon + label tab item layout.
+    ///
+    /// - Parameters:
+    ///   - selection: A binding to the currently selected tab.
+    ///   - activeTint: The color for selected tab items. Defaults to `.primary`.
+    ///   - inactiveTint: The color for unselected tab items. Defaults to `.secondary`.
+    ///   - barTint: The tint color for the sliding selection indicator. Defaults to a subtle gray.
+    ///   - tabBarHeight: The height of the tab bar. Defaults to 55 points.
+    ///   - content: A view builder for the tab content.
     init(
         selection: Binding<Tab>,
         activeTint: Color = .primary,
@@ -92,6 +144,9 @@ public extension AdaptiveTabBar where TabItemContent == DefaultTabItemView<Tab> 
     }
 }
 
+/// The default tab item view showing an icon and label.
+///
+/// Used automatically by `AdaptiveTabBar` when no custom `tabItemView` is provided.
 public struct DefaultTabItemView<Tab: TabItem>: View {
     let tab: Tab
     let isSelected: Bool
@@ -121,10 +176,16 @@ public struct DefaultTabItemView<Tab: TabItem>: View {
     }
 }
 
+/// An invisible spacer that reserves space for the glass tab bar in the safe area.
+///
+/// Use inside `.safeAreaBar(edge: .bottom)` to push content above the floating tab bar.
 @available(iOS 26, *)
 public struct GlassTabBarSpacer: View {
     public var height: CGFloat
     
+    /// Creates a spacer with the specified height.
+    ///
+    /// - Parameter height: The height to reserve. Defaults to the system tab bar height.
     public init(height: CGFloat? = nil) {
         self.height = height ?? Self.systemTabBarHeight
     }
@@ -147,6 +208,21 @@ public struct GlassTabBarSpacer: View {
 }
 
 public extension View {
+    /// Adds safe area padding for the glass tab bar and hides the system tab bar.
+    ///
+    /// Apply this modifier to each tab's content when using `AdaptiveTabBar`. On iOS 26+, it adds spacing
+    /// so content doesn't overlap the floating glass tab bar. On earlier versions, it does nothing.
+    ///
+    /// ```swift
+    /// AdaptiveTabBar(selection: $selectedTab) {
+    ///     HomeView()
+    ///         .glassTabBarContentPadding()
+    ///         .tabItem { Label("Home", systemImage: "house") }
+    ///         .tag(MyTab.home)
+    /// }
+    /// ```
+    ///
+    /// - Parameter height: Custom height for the padding. Defaults to the system tab bar height.
     @ViewBuilder
     func glassTabBarContentPadding(height: CGFloat? = nil) -> some View {
         if #available(iOS 26, *) {
@@ -162,6 +238,14 @@ public extension View {
 
 @available(iOS 26, *)
 extension View {
+    /// Adds content to the safe area inset of the specified edge.
+    ///
+    /// A convenience wrapper around `safeAreaInset(edge:spacing:content:)`.
+    ///
+    /// - Parameters:
+    ///   - edge: The edge to add the safe area inset to.
+    ///   - spacing: Optional spacing between the inset content and the main view.
+    ///   - content: The content to display in the safe area inset.
     public func safeAreaBar<Content: View>(
         edge: VerticalEdge,
         spacing: CGFloat? = nil,
