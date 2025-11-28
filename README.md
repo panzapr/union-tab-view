@@ -19,6 +19,10 @@ On iOS 26, Apple introduced a gorgeous floating glass tab bar with a sliding sel
 - 🎨 **Custom Tab Items** — Any SwiftUI view: custom icons, animated badges, profile avatars, etc.
 - 📱 **Adaptive** — Falls back to a clean custom tab bar on iOS 17-25
 
+## Documentation
+
+📚 **[Full API Reference](https://www.swiftipedia.org/documentation/uniontabview)**
+
 ## Requirements
 
 - iOS 17.0+
