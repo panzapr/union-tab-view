@@ -1,6 +1,6 @@
 //
 //  AdaptiveTabView.swift
-//  UnionTabBar
+//  UnionTabView
 //
 //  Created by Union St on 11/28/25.
 //
