@@ -15,9 +15,13 @@ public struct AdaptiveTabView<Tab: Hashable, Content: View, TabItemContent: View
     let tabItemView: (Tab, Bool) -> TabItemContent
     
     private var tabBarHeight: CGFloat {
-        let tabBar = UITabBar()
-        tabBar.sizeToFit()
-        return tabBar.frame.height
+        if #available(iOS 26, *) {
+            return 49
+        } else {
+            let tabBar = UITabBar()
+            tabBar.sizeToFit()
+            return tabBar.frame.height
+        }
     }
     
     public init(
@@ -49,7 +53,8 @@ public struct AdaptiveTabView<Tab: Hashable, Content: View, TabItemContent: View
         }
         .safeAreaInset(edge: .bottom, spacing: 0) {
             glassTabBar
-                .padding(.horizontal, 20)
+                .padding(.horizontal, 16)
+                .padding(.bottom, 4)
         }
     }
     
@@ -187,8 +192,12 @@ public extension View {
     }
     
     private var systemTabBarHeight: CGFloat {
-        let tabBar = UITabBar()
-        tabBar.sizeToFit()
-        return tabBar.frame.height
+        if #available(iOS 26, *) {
+            return 49
+        } else {
+            let tabBar = UITabBar()
+            tabBar.sizeToFit()
+            return tabBar.frame.height
+        }
     }
 }

@@ -136,9 +136,13 @@ public struct GlassTabBarSpacer: View {
     }
     
     private static var systemTabBarHeight: CGFloat {
-        let tabBar = UITabBar()
-        tabBar.sizeToFit()
-        return tabBar.frame.height
+        if #available(iOS 26, *) {
+            return 49
+        } else {
+            let tabBar = UITabBar()
+            tabBar.sizeToFit()
+            return tabBar.frame.height
+        }
     }
 }
 
