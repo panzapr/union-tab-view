@@ -125,8 +125,8 @@ public struct DefaultTabItemView<Tab: TabItem>: View {
 public struct GlassTabBarSpacer: View {
     public var height: CGFloat
     
-    public init(height: CGFloat = 55) {
-        self.height = height
+    public init(height: CGFloat? = nil) {
+        self.height = height ?? Self.systemTabBarHeight
     }
     
     public var body: some View {
@@ -134,11 +134,17 @@ public struct GlassTabBarSpacer: View {
             .blendMode(.destinationOver)
             .frame(height: height)
     }
+    
+    private static var systemTabBarHeight: CGFloat {
+        let tabBar = UITabBar()
+        tabBar.sizeToFit()
+        return tabBar.frame.height
+    }
 }
 
 public extension View {
     @ViewBuilder
-    func glassTabBarContentPadding(height: CGFloat = 55) -> some View {
+    func glassTabBarContentPadding(height: CGFloat? = nil) -> some View {
         if #available(iOS 26, *) {
             self.safeAreaBar(edge: .bottom, spacing: 0) {
                 GlassTabBarSpacer(height: height)

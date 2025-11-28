@@ -14,6 +14,12 @@ public struct AdaptiveTabView<Tab: Hashable, Content: View, TabItemContent: View
     let content: Content
     let tabItemView: (Tab, Bool) -> TabItemContent
     
+    private var tabBarHeight: CGFloat {
+        let tabBar = UITabBar()
+        tabBar.sizeToFit()
+        return tabBar.frame.height
+    }
+    
     public init(
         selection: Binding<Tab>,
         tabs: [Tab],
@@ -149,11 +155,11 @@ struct InteractiveSegmentedControl: UIViewRepresentable {
 
 public extension View {
     @ViewBuilder
-    func adaptiveTab<Tab: Hashable>(_ tab: Tab, height: CGFloat = 55) -> some View {
+    func adaptiveTab<Tab: Hashable>(_ tab: Tab, height: CGFloat? = nil) -> some View {
         if #available(iOS 26, *) {
             self
                 .safeAreaBar(edge: .bottom, spacing: 0) {
-                    GlassTabBarSpacer(height: height)
+                    GlassTabBarSpacer(height: height ?? systemTabBarHeight)
                 }
                 .toolbarVisibility(.hidden, for: .tabBar)
                 .tag(tab)
@@ -163,11 +169,11 @@ public extension View {
     }
     
     @ViewBuilder
-    func adaptiveTab<Tab: Hashable>(_ tab: Tab, title: String, systemImage: String, height: CGFloat = 55) -> some View {
+    func adaptiveTab<Tab: Hashable>(_ tab: Tab, title: String, systemImage: String, height: CGFloat? = nil) -> some View {
         if #available(iOS 26, *) {
             self
                 .safeAreaBar(edge: .bottom, spacing: 0) {
-                    GlassTabBarSpacer(height: height)
+                    GlassTabBarSpacer(height: height ?? systemTabBarHeight)
                 }
                 .toolbarVisibility(.hidden, for: .tabBar)
                 .tag(tab)
@@ -178,5 +184,11 @@ public extension View {
                 }
                 .tag(tab)
         }
+    }
+    
+    private var systemTabBarHeight: CGFloat {
+        let tabBar = UITabBar()
+        tabBar.sizeToFit()
+        return tabBar.frame.height
     }
 }
