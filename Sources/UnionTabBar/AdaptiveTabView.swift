@@ -42,14 +42,9 @@ public struct AdaptiveTabView<Tab: Hashable, Content: View, TabItemContent: View
         TabView(selection: $selection) {
             content
         }
-        .safeAreaInset(edge: .bottom, spacing: 0) {
-            VStack(spacing: 0) {
-                glassTabBar
-                    .frame(height: 54)
-                    .padding(.horizontal, 20)
-            }
-            .frame(height: 62)
-            .padding(.bottom, 21)
+        .safeAreaInset(edge: .bottom, spacing: 21) {
+            glassTabBar
+                .padding(.horizontal, 20)
         }
     }
     
@@ -65,6 +60,8 @@ public struct AdaptiveTabView<Tab: Hashable, Content: View, TabItemContent: View
                     .frame(maxWidth: .infinity)
             }
         }
+        .padding(.vertical, 8)
+        .frame(height: 54)
         .allowsHitTesting(false)
         .background {
             GeometryReader { geometry in
