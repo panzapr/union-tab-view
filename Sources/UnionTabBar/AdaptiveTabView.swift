@@ -42,9 +42,14 @@ public struct AdaptiveTabView<Tab: Hashable, Content: View, TabItemContent: View
         TabView(selection: $selection) {
             content
         }
-        .safeAreaInset(edge: .bottom) {
-            glassTabBar
-                .padding(.horizontal, 20)
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+            VStack(spacing: 0) {
+                glassTabBar
+                    .frame(height: 54)
+                    .padding(.horizontal, 20)
+            }
+            .frame(height: 62)
+            .padding(.bottom, 21)
         }
     }
     
@@ -78,7 +83,6 @@ public struct AdaptiveTabView<Tab: Hashable, Content: View, TabItemContent: View
                 )
             }
         }
-        .padding(4)
         .glassEffect(.regular.interactive(), in: .capsule)
     }
     
